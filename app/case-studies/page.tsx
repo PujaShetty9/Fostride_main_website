@@ -1,12 +1,10 @@
+"use client"
+
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { Navbar } from "@/components/landing/navbar"
 import { Footer } from "@/components/landing/footer"
 
-export const metadata = {
-  title: "Case Studies | Fostride",
-  description: "Real-world R3Bin deployments — measurable results from live pilots.",
-}
 
 const cases = [
   {
