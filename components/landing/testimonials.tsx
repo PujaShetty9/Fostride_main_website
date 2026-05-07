@@ -67,6 +67,14 @@ const testimonials = [
     content:
       "Fostride brings clarity and intelligence to waste management. Its W.I.S.E. powered system enables accurate segregation and real time data, making sustainability measurable and actionable for organisations.",
   },
+  {
+    name: "Rimjhim Charan",
+    role: "Founder, 100krafts",
+    initials: "RC",
+    color: "#0C8346",
+    content:
+      "I'm thrilled to share my experience working with Gavi Kothari, the founder of Fostride. His innovative product is a game-changer in the sustainability space, and I'm impressed by his visionary approach to reducing carbon footprint. What's truly remarkable is his perseverance and grit in managing Fostride at such a young age — it's a testament to the fact that age is just a number. Gavi has surpassed many entrepreneurs with his achievements, and his product has the potential to revolutionize the way we think about sustainability. He is a real package for a long run, and I have no doubt he'll continue to make a significant impact in the industry.",
+  },
 ]
 
 // Duplicate for seamless infinite loop
