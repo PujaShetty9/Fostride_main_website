@@ -20,50 +20,10 @@ const testimonials = [
       "Watching Fostride grow from an inspired idea into a purpose-driven organization has been nothing short of remarkable. The team's dedication to reducing waste and transforming communities is truly inspiring.",
   },
   {
-    name: "Priya Mehta",
-    role: "Sustainability Director, GreenLoop",
-    initials: "PM",
-    color: "#16a34a",
-    content:
-      "Fostride's AI-powered sorting platform gave us real-time visibility we never had before. Our recycling efficiency jumped 40% within the first quarter of deployment.",
-  },
-  {
-    name: "Michael Johnson",
-    role: "CEO, Brightsun",
-    initials: "MJ",
-    color: "#0C8346",
-    content:
-      "Fostride has been instrumental in transforming our sustainability goals. Their expertise across waste processing channels, coupled with their data-driven approach, significantly boosted our efficiency.",
-  },
-  {
-    name: "Sarah Williams",
-    role: "Director, EcoTech Solutions",
-    initials: "SW",
-    color: "#15803d",
-    content:
-      "The level of insight provided by Fostride's analytics platform is unmatched. We can now track waste generation in real-time and make informed decisions that save costs and protect the environment.",
-  },
-  {
-    name: "Arjun Kapoor",
-    role: "Head of Operations, CircleWaste",
-    initials: "AK",
-    color: "#0C8346",
-    content:
-      "Integrating Fostride's W.I.S.E. system into our facility was seamless. The accuracy of the AI sorting blew us away — 99%+ precision on mixed waste streams.",
-  },
-  {
-    name: "Lena Braun",
-    role: "VP Sustainability, NovaPack",
-    initials: "LB",
-    color: "#16a34a",
-    content:
-      "We've tried several waste management solutions, but Fostride stands apart. Their technology is genuinely next-generation and the team is incredibly responsive and knowledgeable.",
-  },
-  {
     name: "Kriti Gupta",
     role: "Partner Relationship Manager, Nasscom",
     initials: "KG",
-    color: "#16a34a",
+    color: "#0C8346",
     content:
       "Fostride brings clarity and intelligence to waste management. Its W.I.S.E. powered system enables accurate segregation and real time data, making sustainability measurable and actionable for organisations.",
   },
@@ -79,7 +39,7 @@ const testimonials = [
 
 // Duplicate for seamless infinite loop
 const row1 = [...testimonials, ...testimonials]
-const row2 = [...testimonials.slice(3), ...testimonials.slice(0, 3), ...testimonials.slice(3), ...testimonials.slice(0, 3)]
+const row2 = [...testimonials.slice(2), ...testimonials.slice(0, 2), ...testimonials.slice(2), ...testimonials.slice(0, 2)]
 
 function TestimonialCard({ t }: { t: typeof testimonials[0] }) {
   return (
