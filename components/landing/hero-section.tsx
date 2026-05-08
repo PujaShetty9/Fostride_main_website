@@ -6,7 +6,6 @@ import Link from "next/link"
 import { ArrowRight, Brain, Wifi, BarChart3, Leaf, Sparkles, Shield } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ScheduleDemoModal } from "@/components/landing/schedule-demo-modal"
-import { AnimatedNumber } from "@/components/ui/animated-number"
 
 const features = [
   {
@@ -135,12 +134,12 @@ export function HeroSection() {
               <div className="flex flex-wrap gap-8 pt-8 border-t border-white/10">
                 <div className="flex flex-col group cursor-default">
                   <span className="text-2xl font-bold text-[#0C8346] font-[family-name:var(--font-unbounded)] group-hover:scale-110 transition-transform duration-200 origin-left flex items-baseline gap-0.5">
-                    <AnimatedNumber value={8.1} decimalPlaces={1} />k
+                    65,000
                   </span>
-                  <span className="text-[11px] text-gray-500 uppercase tracking-widest mt-0.5">Items Scanned</span>
+                  <span className="text-[11px] text-gray-500 uppercase tracking-widest mt-0.5">Images Scanned</span>
                 </div>
                 <div className="flex flex-col group cursor-default">
-                  <span className="text-2xl font-bold text-[#0C8346] font-[family-name:var(--font-unbounded)] group-hover:scale-110 transition-transform duration-200 origin-left">94%+</span>
+                  <span className="text-2xl font-bold text-[#0C8346] font-[family-name:var(--font-unbounded)] group-hover:scale-110 transition-transform duration-200 origin-left">85%</span>
                   <span className="text-[11px] text-gray-500 uppercase tracking-widest mt-0.5">Sort Accuracy</span>
                 </div>
                 <div className="flex flex-col group cursor-default">
