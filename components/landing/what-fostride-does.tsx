@@ -1,9 +1,29 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
+import { Trash2, ScanEye, BarChart3 } from "lucide-react"
+
+const flow = [
+  { icon: Trash2,   label: "Toss",     desc: "Anything goes in — no pre-sorting" },
+  { icon: ScanEye,  label: "Classify", desc: "W.I.S.E. identifies it in <500ms"  },
+  { icon: BarChart3,label: "Report",   desc: "Audit-ready data hits your dashboard" },
+]
 
 export function WhatFostrideDoes() {
   const ref = useRef<HTMLDivElement>(null)
+  const [lineVisible, setLineVisible] = useState(false)
+  const flowRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = flowRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setLineVisible(true) },
+      { threshold: 0.4 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
 
   useEffect(() => {
     const els = ref.current?.querySelectorAll(".reveal-up") ?? []
@@ -110,6 +130,42 @@ export function WhatFostrideDoes() {
                 W.I.S.E. — AI Intelligence
               </span>
             </div>
+          </div>
+        </div>
+
+        {/* ── 3-step visual flow ── */}
+        <div ref={flowRef} className="mt-20 relative">
+          {/* Connecting line — desktop only */}
+          <div className="hidden md:block absolute top-[28px] left-[calc(16.66%+20px)] right-[calc(16.66%+20px)] h-px overflow-hidden pointer-events-none">
+            <div style={{
+              height: "100%",
+              backgroundImage: "linear-gradient(90deg, #1A6B3C 50%, transparent 50%)",
+              backgroundSize: "12px 1px",
+              transform: lineVisible ? "scaleX(1)" : "scaleX(0)",
+              transformOrigin: "left",
+              transition: "transform 1s ease 0.3s",
+            }} />
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 md:gap-4 relative z-10">
+            {flow.map((f, i) => {
+              const Icon = f.icon
+              return (
+                <div key={f.label} className="flex flex-col items-center text-center gap-3"
+                  style={{
+                    opacity: lineVisible ? 1 : 0,
+                    transform: lineVisible ? "translateY(0)" : "translateY(20px)",
+                    transition: `opacity 0.6s ease ${0.2 + i * 0.15}s, transform 0.6s ease ${0.2 + i * 0.15}s`,
+                  }}>
+                  <div className="w-14 h-14 rounded-full flex items-center justify-center"
+                    style={{ background: "rgba(26,107,60,0.12)", border: "1px solid rgba(26,107,60,0.3)" }}>
+                    <Icon size={22} color="#1A6B3C" />
+                  </div>
+                  <p className="text-white font-bold text-base">{f.label}</p>
+                  <p className="text-[12px] leading-relaxed max-w-[160px]" style={{ color: "#5A5450" }}>{f.desc}</p>
+                </div>
+              )
+            })}
           </div>
         </div>
 

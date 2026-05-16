@@ -98,20 +98,62 @@ export function HowItWorks() {
           </p>
         </div>
 
+        <style>{`
+          @keyframes travelDot {
+            0%   { left: 0%; opacity: 0; }
+            5%   { opacity: 1; }
+            95%  { opacity: 1; }
+            100% { left: 100%; opacity: 0; }
+          }
+        `}</style>
+
         {/* Steps */}
         <div className="relative max-w-6xl mx-auto">
 
           {/* Connecting line — spans all 4 nodes on desktop */}
-          <div className="hidden lg:block absolute top-[52px] left-[calc(12.5%+8px)] right-[calc(12.5%+8px)] h-px overflow-hidden pointer-events-none">
-            <div
-              className="h-full bg-gradient-to-r from-[#0C8346]/40 via-[#22c55e]/60 via-[#16a34a]/60 to-[#0C8346]/40"
-              style={{
-                transform: visible ? "scaleX(1)" : "scaleX(0)",
-                transition: "transform 1.4s ease 0.7s",
-                transformOrigin: "left",
-              }}
-            />
+          <div className="hidden lg:block absolute top-[52px] left-[calc(12.5%+8px)] right-[calc(12.5%+8px)] h-px pointer-events-none overflow-hidden">
+            {/* Dashed base track */}
+            <div style={{
+              position: "absolute", inset: 0,
+              backgroundImage: "linear-gradient(90deg, rgba(26,107,60,0.25) 50%, transparent 50%)",
+              backgroundSize: "10px 1px",
+            }} />
+            {/* Animated fill */}
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(90deg, #0C8346 0%, #22c55e 50%, #0C8346 100%)",
+              transform: visible ? "scaleX(1)" : "scaleX(0)",
+              transformOrigin: "left",
+              transition: "transform 1.4s ease 0.7s",
+              opacity: 0.7,
+            }} />
+            {/* Traveling dot */}
+            {visible && (
+              <div style={{
+                position: "absolute", top: "50%", marginTop: "-4px",
+                width: 8, height: 8,
+                borderRadius: "50%",
+                background: "#22c55e",
+                boxShadow: "0 0 8px #22c55e, 0 0 16px #22c55e80",
+                animation: "travelDot 2.5s ease-in-out 1s infinite",
+              }} />
+            )}
           </div>
+
+          {/* Arrows between steps — desktop */}
+          {[1, 2, 3].map((pos) => (
+            <div key={pos} className="hidden lg:flex absolute top-[44px] items-center justify-center pointer-events-none z-20"
+              style={{ left: `calc(${pos * 25}% - 10px)`, width: 20 }}>
+              <svg
+                width="14" height="14" viewBox="0 0 14 14" fill="none"
+                style={{
+                  opacity: visible ? 1 : 0,
+                  transition: `opacity 0.5s ease ${1.2 + pos * 0.1}s`,
+                }}>
+                <path d="M2 7h10M8 3l4 4-4 4" stroke="#22c55e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          ))}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-5">
             {steps.map((s, i) => {

@@ -24,6 +24,16 @@ const HowItWorks = dynamic(
   { loading: () => <SectionLoader />, ssr: true }
 )
 
+const StatsStrip = dynamic(
+  () => import("@/components/landing/stats-strip").then((m) => m.StatsStrip),
+  { loading: () => <SectionLoader />, ssr: true }
+)
+
+const WhoItsFor = dynamic(
+  () => import("@/components/landing/who-its-for").then((m) => m.WhoItsFor),
+  { loading: () => <SectionLoader />, ssr: true }
+)
+
 const DataFlywheel = dynamic(
   () => import("@/components/landing/data-flywheel-client").then((m) => m.DataFlywheelClient),
   { loading: () => <SectionLoader />, ssr: true }
@@ -73,7 +83,9 @@ export default function Home() {
         <div id="section-hero"><HomeLandingHero /></div>
         <div id="section-problem"><ProblemSection /></div>
         <div id="section-what"><WhatFostrideDoes /></div>
+        <StatsStrip />
         <div id="section-how"><HowItWorks /></div>
+        <div id="section-who"><WhoItsFor /></div>
         <div id="section-flywheel"><DataFlywheel /></div>
         <div id="section-pilots"><PilotsTimeline /></div>
         <div id="section-sectors"><WhatWeWorkFor /></div>
