@@ -64,6 +64,11 @@ const BoldCTA = dynamic(
   { loading: () => <SectionLoader />, ssr: true }
 )
 
+const CredibilityStrip = dynamic(
+  () => import("@/components/landing/credibility-strip").then((m) => m.CredibilityStrip),
+  { loading: () => <SectionLoader />, ssr: true }
+)
+
 const Footer = dynamic(
   () => import("@/components/landing/footer").then((m) => m.Footer),
   { loading: () => <SectionLoader />, ssr: true }
@@ -92,6 +97,7 @@ export default function Home() {
         <Testimonials />
         <CompaniesTicker />
         <div id="section-cta"><BoldCTA /></div>
+        <CredibilityStrip />
         <Footer />
       </div>
     </main>
