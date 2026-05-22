@@ -3,32 +3,15 @@
 import Image from "next/image"
 import { useState } from "react"
 
-function PartnerLogo({ src, alt, width, height }: { src: string; alt: string; width: number; height: number }) {
-  const [errored, setErrored] = useState(false)
-  if (errored) return (
-    <span className="text-sm font-bold tracking-wide" style={{ color: "rgba(255,255,255,0.5)" }}>{alt}</span>
-  )
-  return (
-    <div className="relative" style={{ width, height }}>
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className="object-contain opacity-55 group-hover:opacity-85 transition-opacity duration-300"
-        onError={() => setErrored(true)}
-      />
-    </div>
-  )
-}
-
 const partners = [
   {
     label: "Incubated at",
     name: "RIIDL",
     sub: "Somaiya Vidyavihar University",
     logo: "/images/companies/riidl.png",
-    logoW: 90,
-    logoH: 36,
+    logoW: 80,
+    logoH: 32,
+    whiteBg: false,
     invert: true,
   },
   {
@@ -36,17 +19,39 @@ const partners = [
     name: "NVIDIA Inception",
     sub: "AI & Deep Learning Program",
     logo: "/images/partners/nvidia-inception.png",
-    logoW: 130,
-    logoH: 34,
+    logoW: 120,
+    logoH: 36,
+    whiteBg: true,
     invert: false,
   },
   {
     label: "Member",
-    name: "Nasscom",
-    sub: "DeepTech Club Launchpad",
-    logo: "/images/partners/nasscom.png",
-    logoW: 110,
-    logoH: 34,
+    name: "Nasscom DeepTech",
+    sub: "Club Launchpad",
+    logo: "/images/partners/nasscom.svg",
+    logoW: 96,
+    logoH: 44,
+    whiteBg: true,
+    invert: false,
+  },
+  {
+    label: "Supported by",
+    name: "NIDHI Prayas",
+    sub: "DST — Govt. of India",
+    logo: "/images/partners/nidhi-prayas.png",
+    logoW: 100,
+    logoH: 36,
+    whiteBg: true,
+    invert: false,
+  },
+  {
+    label: "Recognised by",
+    name: "Startup India",
+    sub: "DPIIT — Govt. of India",
+    logo: "/images/partners/startup-india.jpg",
+    logoW: 104,
+    logoH: 38,
+    whiteBg: true,
     invert: false,
   },
 ]
@@ -56,17 +61,17 @@ function PartnerCard({ p }: { p: typeof partners[0] }) {
 
   return (
     <div
-      className="group flex flex-col items-center gap-4 rounded-2xl px-6 py-7 transition-all duration-300 cursor-default"
+      className="flex flex-col items-center gap-3 rounded-2xl px-4 py-6 transition-all duration-300 cursor-default"
       style={{
         background: hovered ? "rgba(26,107,60,0.05)" : "rgba(255,255,255,0.02)",
-        border: `1px solid ${hovered ? "rgba(26,107,60,0.22)" : "rgba(255,255,255,0.06)"}`,
+        border: `1px solid ${hovered ? "rgba(26,107,60,0.25)" : "rgba(255,255,255,0.06)"}`,
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {/* Label pill */}
       <span
-        className="text-[9px] font-bold tracking-[0.22em] uppercase px-3 py-1 rounded-full"
+        className="text-[9px] font-bold tracking-[0.2em] uppercase px-3 py-1 rounded-full whitespace-nowrap"
         style={{
           color: "#1A6B3C",
           background: "rgba(12,131,70,0.1)",
@@ -76,26 +81,38 @@ function PartnerCard({ p }: { p: typeof partners[0] }) {
         {p.label}
       </span>
 
-      {/* Logo */}
-      <div className="flex items-center justify-center h-10">
-        {p.invert ? (
-          <div className="relative" style={{ width: p.logoW, height: p.logoH }}>
-            <Image
-              src={p.logo}
-              alt={p.name}
-              fill
-              className="object-contain brightness-0 invert opacity-55 group-hover:opacity-85 transition-opacity duration-300"
-            />
-          </div>
-        ) : (
-          <PartnerLogo src={p.logo} alt={p.name} width={p.logoW} height={p.logoH} />
-        )}
+      {/* Logo container */}
+      <div
+        className="flex items-center justify-center rounded-xl transition-all duration-300"
+        style={{
+          width: "100%",
+          height: 56,
+          background: p.whiteBg ? "rgba(255,255,255,0.94)" : "transparent",
+          padding: p.whiteBg ? "8px 12px" : "0",
+        }}
+      >
+        <div
+          className="relative transition-opacity duration-300"
+          style={{
+            width: p.logoW,
+            height: p.logoH,
+            opacity: hovered ? 1 : 0.75,
+            filter: p.invert ? "brightness(0) invert(1)" : "none",
+          }}
+        >
+          <Image
+            src={p.logo}
+            alt={p.name}
+            fill
+            className="object-contain"
+          />
+        </div>
       </div>
 
       {/* Name + sub */}
       <div className="text-center">
-        <p className="text-[13px] font-semibold text-white leading-snug">{p.name}</p>
-        <p className="text-[11px] mt-0.5" style={{ color: "#3A3830" }}>{p.sub}</p>
+        <p className="text-[12px] font-semibold text-white leading-snug">{p.name}</p>
+        <p className="text-[10px] mt-0.5" style={{ color: "#3A3830" }}>{p.sub}</p>
       </div>
     </div>
   )
@@ -107,7 +124,7 @@ export function CredibilityStrip() {
       className="relative w-full py-14 overflow-hidden"
       style={{ background: "#070503", borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
-      {/* Subtle glow */}
+      {/* Ambient glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -118,20 +135,20 @@ export function CredibilityStrip() {
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
 
-        {/* Section label */}
+        {/* Header */}
         <div className="flex items-center justify-center gap-4 mb-10">
-          <div className="h-px flex-1 max-w-[80px]" style={{ background: "rgba(255,255,255,0.06)" }} />
+          <div className="h-px flex-1 max-w-[60px]" style={{ background: "rgba(255,255,255,0.06)" }} />
           <span
             className="text-[10px] font-semibold tracking-[0.22em] uppercase"
             style={{ color: "#2A2820" }}
           >
             Backed &amp; Supported By
           </span>
-          <div className="h-px flex-1 max-w-[80px]" style={{ background: "rgba(255,255,255,0.06)" }} />
+          <div className="h-px flex-1 max-w-[60px]" style={{ background: "rgba(255,255,255,0.06)" }} />
         </div>
 
-        {/* Partner cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+        {/* 2 col mobile → 3 col tablet → 5 col desktop */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
           {partners.map((p, i) => (
             <PartnerCard key={i} p={p} />
           ))}
