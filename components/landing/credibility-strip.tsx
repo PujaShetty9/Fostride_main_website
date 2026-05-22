@@ -9,8 +9,8 @@ const partners = [
     name: "RIIDL",
     sub: "Somaiya Vidyavihar University",
     logo: "/images/companies/riidl.png",
-    logoW: 80,
-    logoH: 32,
+    logoW: 110,
+    logoH: 44,
     whiteBg: false,
     invert: true,
   },
@@ -19,8 +19,8 @@ const partners = [
     name: "NVIDIA Inception",
     sub: "AI & Deep Learning Program",
     logo: "/images/partners/nvidia-inception.png",
-    logoW: 120,
-    logoH: 36,
+    logoW: 160,
+    logoH: 50,
     whiteBg: true,
     invert: false,
   },
@@ -29,8 +29,8 @@ const partners = [
     name: "Nasscom DeepTech",
     sub: "Club Launchpad",
     logo: "/images/partners/nasscom.svg",
-    logoW: 96,
-    logoH: 44,
+    logoW: 110,
+    logoH: 56,
     whiteBg: true,
     invert: false,
   },
@@ -39,8 +39,8 @@ const partners = [
     name: "NIDHI Prayas",
     sub: "DST — Govt. of India",
     logo: "/images/partners/nidhi-prayas.png",
-    logoW: 100,
-    logoH: 36,
+    logoW: 140,
+    logoH: 50,
     whiteBg: true,
     invert: false,
   },
@@ -49,70 +49,91 @@ const partners = [
     name: "Startup India",
     sub: "DPIIT — Govt. of India",
     logo: "/images/partners/startup-india.jpg",
-    logoW: 104,
-    logoH: 38,
+    logoW: 90,
+    logoH: 90,
     whiteBg: true,
     invert: false,
   },
 ]
 
-function PartnerCard({ p }: { p: typeof partners[0] }) {
+function PartnerSlot({
+  p,
+  last,
+}: {
+  p: typeof partners[0]
+  last: boolean
+}) {
   const [hovered, setHovered] = useState(false)
 
   return (
     <div
-      className="flex flex-col items-center gap-3 rounded-2xl px-4 py-6 transition-all duration-300 cursor-default"
+      className="flex-1 flex flex-col items-center justify-between gap-5 px-6 py-9 relative transition-all duration-300 cursor-default min-w-0"
       style={{
-        background: hovered ? "rgba(26,107,60,0.05)" : "rgba(255,255,255,0.02)",
-        border: `1px solid ${hovered ? "rgba(26,107,60,0.25)" : "rgba(255,255,255,0.06)"}`,
+        background: hovered ? "rgba(26,107,60,0.06)" : "transparent",
+        borderRight: last ? "none" : "1px solid rgba(255,255,255,0.06)",
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Label pill */}
+      {/* Top glow on hover */}
+      {hovered && (
+        <div
+          className="absolute inset-x-0 top-0 h-px"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(12,131,70,0.5), transparent)",
+          }}
+        />
+      )}
+
+      {/* Label */}
       <span
-        className="text-[9px] font-bold tracking-[0.2em] uppercase px-3 py-1 rounded-full whitespace-nowrap"
+        className="text-[9px] font-bold tracking-[0.2em] uppercase px-3 py-1.5 rounded-full whitespace-nowrap"
         style={{
-          color: "#1A6B3C",
-          background: "rgba(12,131,70,0.1)",
-          border: "1px solid rgba(12,131,70,0.18)",
+          color: hovered ? "#22c55e" : "#1A6B3C",
+          background: hovered ? "rgba(12,131,70,0.18)" : "rgba(12,131,70,0.08)",
+          border: "1px solid rgba(12,131,70,0.2)",
+          transition: "color 0.3s, background 0.3s",
         }}
       >
         {p.label}
       </span>
 
-      {/* Logo container */}
+      {/* Logo */}
       <div
-        className="flex items-center justify-center rounded-xl transition-all duration-300"
+        className="flex items-center justify-center rounded-2xl transition-all duration-300"
         style={{
           width: "100%",
-          height: 56,
-          background: p.whiteBg ? "rgba(255,255,255,0.94)" : "transparent",
-          padding: p.whiteBg ? "8px 12px" : "0",
+          height: 96,
+          background: p.whiteBg ? "rgba(255,255,255,0.96)" : "transparent",
+          padding: p.whiteBg ? "10px 16px" : "0",
+          boxShadow: p.whiteBg && hovered ? "0 4px 24px rgba(0,0,0,0.25)" : "none",
         }}
       >
         <div
-          className="relative transition-opacity duration-300"
+          className="relative"
           style={{
             width: p.logoW,
             height: p.logoH,
-            opacity: hovered ? 1 : 0.75,
             filter: p.invert ? "brightness(0) invert(1)" : "none",
+            opacity: hovered ? 1 : 0.8,
+            transition: "opacity 0.3s",
           }}
         >
-          <Image
-            src={p.logo}
-            alt={p.name}
-            fill
-            className="object-contain"
-          />
+          <Image src={p.logo} alt={p.name} fill className="object-contain" />
         </div>
       </div>
 
       {/* Name + sub */}
       <div className="text-center">
-        <p className="text-[12px] font-semibold text-white leading-snug">{p.name}</p>
-        <p className="text-[10px] mt-0.5" style={{ color: "#3A3830" }}>{p.sub}</p>
+        <p
+          className="text-[13px] font-semibold leading-snug transition-colors duration-300"
+          style={{ color: hovered ? "#ffffff" : "rgba(255,255,255,0.7)" }}
+        >
+          {p.name}
+        </p>
+        <p className="text-[11px] mt-1" style={{ color: "#3A3830" }}>
+          {p.sub}
+        </p>
       </div>
     </div>
   )
@@ -121,7 +142,7 @@ function PartnerCard({ p }: { p: typeof partners[0] }) {
 export function CredibilityStrip() {
   return (
     <section
-      className="relative w-full py-14 overflow-hidden"
+      className="relative w-full py-20 overflow-hidden"
       style={{ background: "#070503", borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
       {/* Ambient glow */}
@@ -129,31 +150,60 @@ export function CredibilityStrip() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 80% at 50% 100%, rgba(12,131,70,0.04) 0%, transparent 70%)",
+            "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(12,131,70,0.05) 0%, transparent 70%)",
         }}
       />
 
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
 
         {/* Header */}
-        <div className="flex items-center justify-center gap-4 mb-10">
-          <div className="h-px flex-1 max-w-[60px]" style={{ background: "rgba(255,255,255,0.06)" }} />
-          <span
-            className="text-[10px] font-semibold tracking-[0.22em] uppercase"
-            style={{ color: "#2A2820" }}
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-3 mb-3">
+            <span
+              className="h-px block"
+              style={{ width: 40, background: "rgba(12,131,70,0.4)" }}
+            />
+            <span
+              className="text-[11px] font-semibold tracking-[0.25em] uppercase"
+              style={{ color: "#0C8346" }}
+            >
+              Backed &amp; Supported By
+            </span>
+            <span
+              className="h-px block"
+              style={{ width: 40, background: "rgba(12,131,70,0.4)" }}
+            />
+          </div>
+          <h2
+            className="text-2xl md:text-3xl font-bold font-[family-name:var(--font-unbounded)] text-white leading-tight"
           >
-            Backed &amp; Supported By
-          </span>
-          <div className="h-px flex-1 max-w-[60px]" style={{ background: "rgba(255,255,255,0.06)" }} />
+            Validated by industry leaders
+          </h2>
+          <p className="mt-2 text-[14px]" style={{ color: "#4A4540" }}>
+            Institutional backing that speaks to our credibility and mission.
+          </p>
         </div>
 
-        {/* 2 col mobile → 3 col tablet → 5 col desktop */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
+        {/* Partner strip — single dark card, horizontal */}
+        <div
+          className="rounded-3xl overflow-hidden flex flex-col lg:flex-row"
+          style={{
+            border: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(255,255,255,0.02)",
+          }}
+        >
           {partners.map((p, i) => (
-            <PartnerCard key={i} p={p} />
+            <PartnerSlot key={i} p={p} last={i === partners.length - 1} />
           ))}
         </div>
 
+        {/* Bottom micro-text */}
+        <p
+          className="text-center mt-6 text-[11px]"
+          style={{ color: "#2A2820" }}
+        >
+          Incubated &middot; Certified &middot; Recognised by Govt. of India programs
+        </p>
       </div>
     </section>
   )
