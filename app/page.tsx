@@ -44,23 +44,8 @@ const PilotsTimeline = dynamic(
   { loading: () => <SectionLoader />, ssr: true }
 )
 
-const WhatWeWorkFor = dynamic(
-  () => import("@/components/landing/what-we-work-for").then((m) => m.WhatWeWorkFor),
-  { loading: () => <SectionLoader />, ssr: true }
-)
-
 const Testimonials = dynamic(
   () => import("@/components/landing/testimonials").then((m) => m.Testimonials),
-  { loading: () => <SectionLoader />, ssr: true }
-)
-
-const CompaniesTicker = dynamic(
-  () => import("@/components/landing/companies-ticker").then((m) => m.CompaniesTicker),
-  { loading: () => <SectionLoader />, ssr: true }
-)
-
-const BoldCTA = dynamic(
-  () => import("@/components/landing/bold-cta").then((m) => m.BoldCTA),
   { loading: () => <SectionLoader />, ssr: true }
 )
 
@@ -93,10 +78,7 @@ export default function Home() {
         <div id="section-who"><WhoItsFor /></div>
         <div id="section-flywheel"><DataFlywheel /></div>
         <div id="section-pilots"><PilotsTimeline /></div>
-        <div id="section-sectors"><WhatWeWorkFor /></div>
         <Testimonials />
-        <CompaniesTicker />
-        <div id="section-cta"><BoldCTA /></div>
         <CredibilityStrip />
         <Footer />
       </div>
