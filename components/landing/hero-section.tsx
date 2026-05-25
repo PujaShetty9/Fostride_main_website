@@ -95,12 +95,11 @@ export function HeroSection() {
                 <h1
                   className="text-5xl md:text-6xl lg:text-[70px] font-bold tracking-tight leading-[0.92] font-[family-name:var(--font-unbounded)]"
                   style={{
-                    background: "linear-gradient(135deg, #0C8346 0%, #4ade80 40%, #0C8346 80%)",
+                    background: "linear-gradient(135deg, #0C8346 0%, #22c55e 40%, #0C8346 80%)",
                     backgroundSize: "200% 200%",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
-                    color: "transparent",
                     animation: "gradientShift 6s ease infinite",
                   }}
                 >
@@ -124,7 +123,7 @@ export function HeroSection() {
                 </button>
 
                 <Link
-                  href="/dashboard"
+                  href="/login"
                   className="group inline-flex items-center justify-center gap-2 border border-white/20 hover:border-[#0C8346]/60 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-[#0C8346]/10 backdrop-blur-sm pointer-events-auto"
                 >
                   Live Analytics
@@ -206,7 +205,7 @@ export function HeroSection() {
                             <Icon className={cn("h-4 w-4 transition-colors", isActive ? "text-white" : "text-[#0C8346]")} />
                           </div>
                           <div>
-                            <div className={cn("text-xs font-semibold transition-colors duration-200", isActive ? "text-[#4ade80]" : "text-white")}>
+                            <div className={cn("text-xs font-semibold transition-colors duration-200", isActive ? "text-[#22c55e]" : "text-white")}>
                               {feature.label}
                             </div>
                             <div className="text-[10px] text-gray-500">{feature.description}</div>
