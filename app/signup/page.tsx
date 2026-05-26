@@ -85,6 +85,7 @@ function SignupContent() {
                     email: email,
                     bin_id: actualBinId,
                     role: 'user',
+                    company_name: companyName,
                 })
 
             if (profileError) {
