@@ -25,7 +25,7 @@ import { Badge } from "@/components/ui/badge"
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 type BinRegistry = {
-  bin_id: string; location: string; installed_at: string; access_code: string
+  bin_id: string
   internal_id?: string; manufacturing_serial?: string; electronics_version?: string
   deployment_status?: string; registered_by?: string; remarks?: string
   created_at?: string; updated_at?: string
@@ -293,15 +293,11 @@ function RegisterBinForm({ adminName, onSuccess, onClose, supabase }: {
 
       const nextNumber = r3bNumbers.length > 0 ? Math.max(...r3bNumbers) + 1 : 1
       const newBinId = `R3B_${String(nextNumber).padStart(3, "0")}`
-      const accessCode = `R3B-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
 
       const { data: newBin, error: insertError } = await supabase
         .from("r3bin_registry")
         .insert({
           bin_id: newBinId,
-          location: "To be assigned",
-          installed_at: new Date().toISOString(),
-          access_code: accessCode,
           manufacturing_serial: manufacturingSerial || null,
           electronics_version: electronicsVersion || null,
           deployment_status: deploymentStatus,
@@ -336,11 +332,7 @@ function RegisterBinForm({ adminName, onSuccess, onClose, supabase }: {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
       <div className="w-full max-w-lg rounded-2xl border border-border bg-card shadow-2xl overflow-hidden">
-
-        {/* ── Color top bar ── */}
         <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
-
-        {/* ── Header ── */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-border">
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
@@ -356,8 +348,6 @@ function RegisterBinForm({ adminName, onSuccess, onClose, supabase }: {
             <X className="h-3.5 w-3.5" />
           </button>
         </div>
-
-        {/* ── Bin ID + Registered By highlight row ── */}
         <div className="grid grid-cols-2 divide-x divide-border border-b border-border">
           <div className="px-6 py-4 bg-primary/5">
             <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1.5">
@@ -374,10 +364,7 @@ function RegisterBinForm({ adminName, onSuccess, onClose, supabase }: {
             <p className="text-sm font-semibold text-foreground">{adminName}</p>
           </div>
         </div>
-
-        {/* ── Form fields ── */}
         <form onSubmit={handleRegister} className="p-6 space-y-4">
-
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
@@ -393,7 +380,7 @@ function RegisterBinForm({ adminName, onSuccess, onClose, supabase }: {
             </div>
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-                <Cpu className="h-3 w-3 text-muted-foreground" />Electronics Ver.
+                <Cpu className="h-3 w-3 text-muted-foreground" />Electronics Version
               </label>
               <input
                 type="text"
@@ -404,7 +391,6 @@ function RegisterBinForm({ adminName, onSuccess, onClose, supabase }: {
               />
             </div>
           </div>
-
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
               <Activity className="h-3 w-3 text-muted-foreground" />Deployment Status
@@ -422,13 +408,10 @@ function RegisterBinForm({ adminName, onSuccess, onClose, supabase }: {
               </select>
               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
             </div>
-            {/* Status badge below select */}
           </div>
-
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-              <FileText className="h-3 w-3 text-muted-foreground" />
-              Remarks
+              <FileText className="h-3 w-3 text-muted-foreground" />Remarks
             </label>
             <textarea
               value={remarks}
@@ -438,15 +421,12 @@ function RegisterBinForm({ adminName, onSuccess, onClose, supabase }: {
               className="w-full resize-none rounded-xl border border-border bg-secondary px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
             />
           </div>
-
           {error && (
-            <div className="flex items-start gap-2 rounded-xl border border-red-400/20 bg-red-400/8 px-3 py-2.5 text-sm text-red-400">
+            <div className="flex items-start gap-2 rounded-xl border border-red-400/20 bg-red-400/10 px-3 py-2.5 text-sm text-red-400">
               <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
               {error}
             </div>
           )}
-
-          {/* ── Action buttons ── */}
           <div className="flex gap-3 pt-1">
             <button type="button" onClick={onClose}
               className="flex-1 rounded-xl border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground transition-all">
@@ -480,14 +460,6 @@ function DeviceRegistryCard({ bin }: { bin: BinRegistry }) {
         )}
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-4">
-        <div className="space-y-1.5">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-            <Hash className="h-3 w-3" />Internal ID
-          </p>
-          <p className="text-xs font-mono text-foreground truncate" title={bin.internal_id}>
-            {bin.internal_id ? bin.internal_id.substring(0, 8) + "..." : "—"}
-          </p>
-        </div>
         <div className="space-y-1.5">
           <p className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
             <Tag className="h-3 w-3" />Bin Code
@@ -555,19 +527,16 @@ function AdminDashboardContent() {
   const [binOverview, setBinOverview] = useState<BinOverview | null>(null)
   const [showRegisterForm, setShowRegisterForm] = useState(false)
 
-  // Filter state
   const [filterType, setFilterType] = useState<FilterType>("bin_id")
   const [filterDropdownOpen, setFilterDropdownOpen] = useState(false)
   const [secondDropdownOpen, setSecondDropdownOpen] = useState(false)
   const [selectedGroup, setSelectedGroup] = useState<string | null>(null)
 
-  // Analytics
   const [binRecord, setBinRecord] = useState<BinRecord | null>(null)
   const [wasteLogs, setWasteLogs] = useState<WasteLog[]>([])
   const [binStats, setBinStats] = useState<BinStats | null>(null)
   const [trendData, setTrendData] = useState<any[]>([])
 
-  // ── Auth + init ──────────────────────────────────────────────────────────────
   useEffect(() => {
     const init = async () => {
       const { data: { user } } = await supabase.auth.getUser()
@@ -585,7 +554,7 @@ function AdminDashboardContent() {
       if (overviewRes.data) setAllOverviews(overviewRes.data)
       if (binRes.data) {
         setAllBins(binRes.data)
-        const def = binRes.data.find((b: BinRegistry) => b.bin_id === "Bin_001") || binRes.data[0]
+        const def = binRes.data.find((b: BinRegistry) => b.bin_id === "R3B_001") || binRes.data[0]
         if (overviewRes.data && def) {
           const ov = overviewRes.data.find((o: BinOverview) => o.bin_id === def.bin_id) || null
           setBinOverview(ov)
@@ -669,16 +638,15 @@ function AdminDashboardContent() {
     doc.text("Fostride", 14, 25)
     doc.setFontSize(16); doc.text(`Bin Report — ${selectedBin.bin_id}`, pageWidth - 14, 25, { align: "right" })
     doc.setFontSize(10); doc.setTextColor(100)
-    doc.text(selectedBin.location, pageWidth - 14, 32, { align: "right" })
+    doc.text(binOverview?.bin_address || "—", pageWidth - 14, 32, { align: "right" })
     doc.setDrawColor(green); doc.setLineWidth(1); doc.line(14, 38, pageWidth - 14, 38)
     let y = 55
     doc.setFontSize(13); doc.setTextColor(green); doc.text("Bin Details", 14, y); y += 10
     doc.setFontSize(10); doc.setTextColor(50)
     doc.text(`Bin ID: ${selectedBin.bin_id}`, 14, y); y += 7
-    doc.text(`Location: ${selectedBin.location}`, 14, y); y += 7
+    doc.text(`Address: ${binOverview?.bin_address || "—"}`, 14, y); y += 7
     if (binOverview) {
       doc.text(`Registered Name: ${binOverview.bin_registered_name || "—"}`, 14, y); y += 7
-      doc.text(`Address: ${binOverview.bin_address || "—"}`, 14, y); y += 7
       doc.text(`Software: ${binOverview.software_version || "—"} | Model: ${binOverview.model_version || "—"}`, 14, y); y += 7
       doc.text(`Status: ${binOverview.is_online ? "Online" : "Offline"}`, 14, y); y += 7
     }
@@ -720,7 +688,7 @@ function AdminDashboardContent() {
 
   const currentFilterLabel = FILTER_OPTIONS.find(f => f.key === filterType)?.label || "Filter by Bin ID"
   const secondDropdownValue = filterType === "bin_id"
-    ? (selectedBin ? `${selectedBin.bin_id} — ${binOverview?.bin_registered_name || selectedBin.location}` : "")
+    ? (selectedBin ? `${selectedBin.bin_id} — ${binOverview?.bin_registered_name || "—"}` : "")
     : (selectedGroup || "")
   const secondDropdownLabel = filterType === "bin_id" ? "Select Bin ID"
     : filterType === "registered_name" ? "Select Registered Name" : "Select Address"
@@ -738,7 +706,6 @@ function AdminDashboardContent() {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Register Bin Modal */}
       {showRegisterForm && (
         <RegisterBinForm
           adminName={adminName}
@@ -768,7 +735,6 @@ function AdminDashboardContent() {
               <p className="text-muted-foreground mt-1">Welcome back, {adminName}</p>
             </div>
             <div className="flex items-center gap-3">
-              {/* Register New Bin Button */}
               <button onClick={() => setShowRegisterForm(true)}
                 className="flex items-center gap-2 text-xs text-white bg-primary hover:bg-primary/90 rounded-lg px-3 py-2 transition-all font-medium">
                 <Plus className="h-3.5 w-3.5" />Register Bin
@@ -832,7 +798,7 @@ function AdminDashboardContent() {
                           <div className={`h-2.5 w-2.5 rounded-full shrink-0 ${ov?.is_online ? "bg-emerald-400" : ov ? "bg-red-400" : "bg-zinc-600"}`} />
                           <div className="flex-1">
                             <p className={`text-sm font-semibold ${isSelected ? "text-primary" : "text-foreground"}`}>{bin.bin_id}</p>
-                            <p className="text-xs text-muted-foreground">{ov?.bin_registered_name || bin.location}</p>
+                            <p className="text-xs text-muted-foreground">{ov?.bin_registered_name || "—"}</p>
                           </div>
                           <span className={`text-xs px-2 py-0.5 rounded-full border ${ov?.is_online ? "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" : ov ? "text-red-400 bg-red-400/10 border-red-400/20" : "text-zinc-500 bg-zinc-500/10 border-zinc-500/20"}`}>
                             {ov?.is_online ? "Online" : ov ? "Offline" : "—"}
@@ -889,7 +855,7 @@ function AdminDashboardContent() {
                         </div>
                         <div>
                           <p className={`text-sm font-bold ${isSelected ? "text-primary" : "text-foreground"}`}>{bin.bin_id}</p>
-                          <p className="text-xs text-muted-foreground truncate">{bin.location}</p>
+                          <p className="text-xs text-muted-foreground truncate">{ov?.bin_address || "—"}</p>
                         </div>
                         <span className={`text-xs px-2 py-0.5 rounded-full self-start border ${ov?.is_online ? "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" : ov ? "text-red-400 bg-red-400/10 border-red-400/20" : "text-zinc-500 bg-zinc-500/10 border-zinc-500/20"}`}>
                           {ov?.is_online ? "Online" : ov ? "Offline" : "—"}
@@ -906,16 +872,6 @@ function AdminDashboardContent() {
             <>
               {/* ── Bin Info Bar ── */}
               <div className="rounded-2xl bg-card border border-border p-4 mb-6 flex flex-wrap items-center gap-6">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4 text-primary" /><span>{selectedBin.location}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Calendar className="h-4 w-4 text-primary" />
-                  <span>Installed {new Date(selectedBin.installed_at).toLocaleDateString()}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Hash className="h-4 w-4 text-primary" /><span>{selectedBin.access_code}</span>
-                </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Clock className="h-4 w-4 text-primary" /><span>Last active {lastActivity}</span>
                 </div>

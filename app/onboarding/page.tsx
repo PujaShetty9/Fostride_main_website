@@ -34,8 +34,13 @@ function OnboardingContent() {
         .single()
 
       // If bin already set, go to dashboard
+      if (profile?.role === 'admin') {
+        router.push('/admin/dashboard')
+        return  // ← exits immediately, never reaches the form
+      }
+
       if (profile?.bin_id) {
-        router.push(profile.role === 'admin' ? '/admin/dashboard' : '/dashboard')
+        router.push('/dashboard')
         return
       }
 
