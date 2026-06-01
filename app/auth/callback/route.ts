@@ -39,7 +39,7 @@ export async function GET(request: Request) {
                     .from('profiles')
                     .select('id, role')
                     .eq('id', user.id)
-                    .single()
+                    .maybeSingle()
 
                 if (!existingProfile) {
                     // Profile missing — create it now from metadata
@@ -47,23 +47,15 @@ export async function GET(request: Request) {
                     const fullName = user.user_metadata?.full_name
                         ?? user.user_metadata?.name
                         ?? ''
-                    const binId = user.user_metadata?.bin_id ?? null
 
                     await supabase.from('profiles').insert({
                         id: user.id,
                         full_name: fullName,
                         email: user.email ?? '',
-                        bin_id: binId,
                         role: 'user',
+                        company_name: user.user_metadata?.company_name ?? '',
+                        phone_number: user.user_metadata?.phone_number ?? '',
                     })
-
-                    // Also create bin_access if bin_id exists
-                    if (binId) {
-                        await supabase.from('bin_access').upsert({
-                            user_id: user.id,
-                            bin_id: binId,
-                        })
-                    }
                 }
 
                 // Fetch role for redirect
@@ -71,7 +63,7 @@ export async function GET(request: Request) {
                     .from('profiles')
                     .select('role')
                     .eq('id', user.id)
-                    .single()
+                    .maybeSingle()
 
                 const role = profile?.role ?? 'user'
                 const redirectTo = role === 'admin'

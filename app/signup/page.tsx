@@ -14,10 +14,10 @@ import { Loader2 } from 'lucide-react'
 function SignupContent() {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
     const [companyName, setCompanyName] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [binId, setBinId] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [success, setSuccess] = useState<string | null>(null)
@@ -42,18 +42,6 @@ function SignupContent() {
                 throw new Error("Passwords do not match")
             }
 
-            // Verify Bin ID exists
-            const { data: bin, error: binError } = await supabase
-                .from('r3bin_registry')
-                .select('bin_id')
-                .ilike('bin_id', binId.trim())
-                .maybeSingle()
-
-            if (binError) throw new Error('Error verifying Bin ID')
-            if (!bin) throw new Error(`Bin ID "${binId}" not found`)
-
-            const actualBinId = bin.bin_id
-
             // Create Auth User
             const { data, error: signupError } = await supabase.auth.signUp({
                 email,
@@ -62,8 +50,8 @@ function SignupContent() {
                     emailRedirectTo: `${window.location.origin}/auth/callback`,
                     data: {
                         full_name: name,
-                        bin_id: actualBinId,
                         company_name: companyName,
+                        phone_number: phoneNumber,
                     },
                 },
             })
@@ -83,40 +71,19 @@ function SignupContent() {
                     id: data.user.id,
                     full_name: name,
                     email: email,
-                    bin_id: actualBinId,
                     role: 'user',
                     company_name: companyName,
+                    phone_number: phoneNumber,
                 })
 
             if (profileError) {
                 console.error('Profile error:', profileError)
             }
 
-            // Insert into bin_access
-            const { error: binAccessError } = await supabase
-                .from('bin_access')
-                .upsert({
-                    user_id: data.user.id,
-                    bin_id: actualBinId,
-                })
-
-            if (binAccessError) throw binAccessError
-
-            // Update bin_overview with company name and address
-            const { error: overviewError } = await supabase
-                .from('bin_overview')
-                .update({
-                    bin_registered_name: companyName,
-                })
-                .eq('bin_id', actualBinId)
-
-            if (overviewError) {
-                console.error('Overview update error:', overviewError)
-            }
-
             setSuccess('Account created successfully! Please check your email to verify your account.')
 
         } catch (err: unknown) {
+            console.error('Signup error:', err)
             setError(err instanceof Error ? err.message : 'An unexpected error occurred')
         } finally {
             setLoading(false)
@@ -165,6 +132,19 @@ function SignupContent() {
                         </div>
 
                         <div className="space-y-2">
+                            <Label htmlFor="phoneNumber">Phone Number</Label>
+                            <Input
+                                id="phoneNumber"
+                                type="tel"
+                                placeholder="e.g. +91 98765 43210"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                required
+                                className="bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 focus:ring-green-600 focus:border-green-600"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
                             <Label htmlFor="companyName">Company / Organization Name</Label>
                             <Input
                                 id="companyName"
@@ -197,18 +177,6 @@ function SignupContent() {
                                 placeholder="••••••••"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
-                                required
-                                className="bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 focus:ring-green-600 focus:border-green-600"
-                            />
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="binId">Bin ID (from your device)</Label>
-                            <Input
-                                id="binId"
-                                placeholder="e.g. Bin_001"
-                                value={binId}
-                                onChange={(e) => setBinId(e.target.value)}
                                 required
                                 className="bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 focus:ring-green-600 focus:border-green-600"
                             />
